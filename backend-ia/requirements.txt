@@ -6,3 +6,6 @@ numpy
 opencv-python
 ultralytics
 torch
+supabase
+python-dotenv
+python-jose[cryptography]
