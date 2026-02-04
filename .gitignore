@@ -64,3 +64,6 @@ weights/
 # ======================
 .DS_Store
 Thumbs.db
+# SQL scripts
+script.sql
+*.sql
