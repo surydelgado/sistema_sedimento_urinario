@@ -67,3 +67,6 @@ Thumbs.db
 # SQL scripts
 script.sql
 *.sql
+# Ignorar todos los README.md
+README.md
+**/README.md
