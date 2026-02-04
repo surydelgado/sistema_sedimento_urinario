@@ -1,0 +1,66 @@
+# ======================
+# ENVIRONMENT VARIABLES
+# ======================
+.env
+.env.*
+!.env.example
+.env.local
+.env.development
+.env.production
+
+# ======================
+# NODE / FRONTEND
+# ======================
+node_modules/
+.next/
+dist/
+out/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ======================
+# PYTHON / BACKEND IA
+# ======================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.venv/
+venv/
+ENV/
+env/
+pip-log.txt
+
+# ======================
+# JUPYTER / IA
+# ======================
+.ipynb_checkpoints/
+
+# ======================
+# DATASETS / OUTPUTS
+# ======================
+data/
+datasets/
+runs/
+weights/
+*.pt
+*.h5
+*.onnx
+
+# ======================
+# SUPABASE
+# ======================
+.supabase/
+
+# ======================
+# EDITORS
+# ======================
+.vscode/
+.idea/
+
+# ======================
+# OS FILES
+# ======================
+.DS_Store
+Thumbs.db
