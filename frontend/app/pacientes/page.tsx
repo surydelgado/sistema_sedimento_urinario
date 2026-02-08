@@ -389,7 +389,10 @@ export default function PacientesPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <p className="text-slate-900">Cargando...</p>
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+          <p className="text-slate-700 font-medium">Cargando...</p>
+        </div>
       </div>
     )
   }
@@ -398,32 +401,46 @@ export default function PacientesPage() {
     <div className="min-h-screen bg-slate-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-slate-900">Pacientes</h1>
+          <div>
+            <h1 className="text-4xl font-bold text-slate-900 mb-2">Pacientes</h1>
+            <p className="text-slate-600">Gestiona tus pacientes y sus códigos</p>
+          </div>
           <button
             onClick={() => {
               resetForm()
               setShowForm(true)
             }}
-            className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 shadow-sm"
+            className="px-5 py-2.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-medium transition-colors duration-200 flex items-center space-x-2 text-sm"
+            style={{ color: '#ffffff' }}
           >
-            {showForm ? 'Cancelar' : 'Nuevo paciente'}
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: '#ffffff' }}>
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            </svg>
+            <span style={{ color: '#ffffff' }}>{showForm ? 'Cancelar' : 'Nuevo paciente'}</span>
           </button>
         </div>
 
         {/* Buscador */}
         <div className="mb-6">
-          <div className="bg-white border border-slate-200 rounded-lg shadow-sm p-4">
-            <label className="block text-sm font-medium text-slate-700 mb-2">
+          <div className="bg-white border border-slate-200 rounded-lg shadow-sm p-6">
+            <label className="block text-sm font-semibold text-slate-700 mb-3">
               Buscar paciente
             </label>
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Buscar por código (P-0001) o alias..."
-              className="w-full px-3 py-2 bg-white text-slate-900 placeholder-slate-400 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            />
-            <p className="mt-2 text-xs text-slate-500">
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg className="h-5 w-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Buscar por código (P-0001) o alias..."
+                className="w-full pl-10 pr-4 py-3 bg-white text-slate-900 placeholder-slate-400 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+              />
+            </div>
+            <p className="mt-3 text-xs text-slate-500">
               Busca por código del paciente o por alias. El código (P-0001) es el identificador principal.
             </p>
           </div>
@@ -431,9 +448,16 @@ export default function PacientesPage() {
 
         {showForm && (
           <div className="bg-white border border-slate-200 rounded-lg shadow-sm p-6 mb-6">
-            <h2 className="text-xl font-bold text-slate-900 mb-4">
-              {editingPatient ? 'Editar paciente' : 'Crear nuevo paciente'}
-            </h2>
+            <div className="flex items-center space-x-3 mb-6">
+              <div className="p-2 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-lg">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={editingPatient ? "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" : "M12 4v16m8-8H4"} />
+                </svg>
+              </div>
+              <h2 className="text-2xl font-bold text-slate-900">
+                {editingPatient ? 'Editar paciente' : 'Crear nuevo paciente'}
+              </h2>
+            </div>
             
             <div className="space-y-4">
               <div>
@@ -450,10 +474,10 @@ export default function PacientesPage() {
                         setCodeError(null)
                       }}
                       placeholder="P-0001"
-                      className={`w-full px-3 py-2 bg-white text-slate-900 placeholder-slate-400 border rounded-md focus:outline-none focus:ring-2 ${
+                      className={`w-full px-4 py-3 bg-white text-slate-900 placeholder-slate-400 border rounded-lg focus:outline-none focus:ring-2 transition-all ${
                         codeError 
                           ? 'border-red-300 focus:ring-red-500' 
-                          : 'border-slate-300 focus:ring-indigo-500'
+                          : 'border-slate-300 focus:ring-blue-500'
                       }`}
                     />
                     {codeError && (
@@ -467,7 +491,7 @@ export default function PacientesPage() {
                     <button
                       onClick={handleAutoGenerate}
                       disabled={isAutoGenerating}
-                      className="px-4 py-2 bg-slate-100 text-slate-700 rounded-md hover:bg-slate-200 border border-slate-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="px-4 py-3 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 border border-slate-300 disabled:opacity-50 disabled:cursor-not-allowed font-medium transition-all"
                     >
                       {isAutoGenerating ? 'Generando...' : 'Auto-generar'}
                     </button>
@@ -488,24 +512,25 @@ export default function PacientesPage() {
                   value={formData.alias}
                   onChange={(e) => setFormData(prev => ({ ...prev, alias: e.target.value }))}
                   placeholder="Ej: Sury, Paciente A, Adulto 45"
-                  className="w-full px-3 py-2 bg-white text-slate-900 placeholder-slate-400 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-4 py-3 bg-white text-slate-900 placeholder-slate-400 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
                 />
                 <p className="mt-1 text-xs text-slate-500">
                   Alias opcional para facilitar la búsqueda. No reemplaza al código.
                 </p>
               </div>
 
-              <div className="flex space-x-2">
+              <div className="flex space-x-3">
                 <button
                   onClick={editingPatient ? handleUpdatePatient : handleCreatePatient}
                   disabled={!!codeError}
-                  className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-5 py-2.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium transition-colors duration-200 text-sm"
+                  style={{ color: '#ffffff' }}
                 >
                   {editingPatient ? 'Actualizar' : 'Crear'}
                 </button>
                 <button
                   onClick={resetForm}
-                  className="px-4 py-2 bg-slate-100 text-slate-700 rounded-md hover:bg-slate-200 border border-slate-300"
+                  className="px-6 py-3 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 border border-slate-300 font-medium transition-all"
                 >
                   Cancelar
                 </button>
@@ -515,68 +540,81 @@ export default function PacientesPage() {
         )}
 
         <div className="bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden">
-          <table className="min-w-full divide-y divide-slate-200">
-            <thead className="bg-slate-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-slate-700 uppercase tracking-wider">Código</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-slate-700 uppercase tracking-wider">Alias</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-slate-700 uppercase tracking-wider">Fecha de creación</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-slate-700 uppercase tracking-wider">Acciones</th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-slate-200">
-              {filteredPatients.length === 0 ? (
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-slate-200">
+              <thead className="bg-gradient-to-r from-slate-50 to-slate-100">
                 <tr>
-                  <td colSpan={4} className="px-6 py-4 text-center text-slate-500">
-                    {searchQuery ? 'No se encontraron pacientes con ese criterio' : 'No hay pacientes registrados'}
-                  </td>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">Código</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">Alias</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">Fecha de creación</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">Acciones</th>
                 </tr>
-              ) : (
-                filteredPatients.map((patient) => (
-                  <tr key={patient.id} className="hover:bg-slate-50">
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="text-sm font-bold text-slate-900">{patient.code}</span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      {patient.patient_details?.alias ? (
-                        <span className="text-sm text-slate-600">{patient.patient_details.alias}</span>
-                      ) : (
-                        <span className="text-sm text-slate-400 italic">Sin alias</span>
-                      )}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
-                      {formatDate(patient.created_at)}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm space-x-2">
-                      <button
-                        onClick={() => startEdit(patient)}
-                        className="text-indigo-600 hover:text-indigo-900 font-medium"
-                      >
-                        Editar
-                      </button>
-                      <button
-                        onClick={() => setViewingPatient(patient)}
-                        className="text-slate-600 hover:text-slate-900 font-medium"
-                      >
-                        Ver
-                      </button>
+              </thead>
+              <tbody className="bg-white divide-y divide-slate-200">
+                {filteredPatients.length === 0 ? (
+                  <tr>
+                    <td colSpan={4} className="px-6 py-12 text-center">
+                      <div className="flex flex-col items-center">
+                        <svg className="w-12 h-12 text-slate-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                        </svg>
+                        <p className="text-slate-500 font-medium">
+                          {searchQuery ? 'No se encontraron pacientes con ese criterio' : 'No hay pacientes registrados'}
+                        </p>
+                      </div>
                     </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                ) : (
+                  filteredPatients.map((patient) => (
+                    <tr key={patient.id} className="hover:bg-blue-50/50 transition-colors">
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className="text-sm font-bold text-slate-900">{patient.code}</span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        {patient.patient_details?.alias ? (
+                          <span className="text-sm text-slate-600">{patient.patient_details.alias}</span>
+                        ) : (
+                          <span className="text-sm text-slate-400 italic">Sin alias</span>
+                        )}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                        {formatDate(patient.created_at)}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm">
+                        <div className="flex space-x-3">
+                          <button
+                            onClick={() => startEdit(patient)}
+                            className="text-blue-600 hover:text-blue-700 font-semibold transition-colors"
+                          >
+                            Editar
+                          </button>
+                          <button
+                            onClick={() => setViewingPatient(patient)}
+                            className="text-slate-600 hover:text-slate-700 font-semibold transition-colors"
+                          >
+                            Ver
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         {viewingPatient && (
           <div className="mt-6 bg-white border border-slate-200 rounded-lg shadow-sm p-6">
-            <div className="flex justify-between items-start mb-4">
-              <h2 className="text-xl font-bold text-slate-900">Detalle del Paciente</h2>
+            <div className="flex justify-between items-start mb-6">
+              <h2 className="text-2xl font-bold text-slate-900">Detalle del Paciente</h2>
               <button
                 onClick={() => setViewingPatient(null)}
-                className="text-slate-500 hover:text-slate-700"
+                className="p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors"
               >
-                ✕
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
               </button>
             </div>
             <div className="space-y-2">

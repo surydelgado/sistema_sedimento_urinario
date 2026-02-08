@@ -3,6 +3,20 @@
 :root {
   --background: #ffffff;
   --foreground: #0f172a; /* slate-900 */
+  --primary: #2563eb; /* blue-600 - Color principal */
+  --primary-hover: #1d4ed8; /* blue-700 */
+  --primary-light: #eff6ff; /* blue-50 */
+  --primary-medium: #dbeafe; /* blue-100 */
+  --secondary: #475569; /* slate-600 - Color secundario */
+  --secondary-light: #f1f5f9; /* slate-100 */
+  --border: #e2e8f0; /* slate-200 */
+  --border-light: #f1f5f9; /* slate-100 */
+  --text-primary: #0f172a; /* slate-900 */
+  --text-secondary: #64748b; /* slate-500 */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.08);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.08);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.08);
 }
 
 @theme inline {
@@ -14,24 +28,53 @@
 
 /* Forzar tema claro - no usar dark mode automático */
 body {
-  background: #f8fafc; /* slate-50 */
+  background: #f8fafc; /* slate-50 - fondo sólido, sin gradiente */
   color: #0f172a; /* slate-900 */
   font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Asegurar contraste adecuado en todos los elementos */
 h1, h2, h3, h4, h5, h6 {
   color: #0f172a; /* slate-900 */
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+h1 {
+  font-size: 2.25rem;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 1.875rem;
+  font-weight: 600;
+}
+
+h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
 }
 
 p, span, div {
   color: inherit;
 }
 
-/* Inputs y selects con buen contraste */
+/* Inputs y selects con buen contraste y diseño moderno */
 input, textarea, select {
   background-color: #ffffff;
   color: #0f172a;
+  transition: all 0.2s ease-in-out;
+  border-radius: 0.5rem;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  ring: 2px;
+  ring-color: var(--primary);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 input::placeholder, textarea::placeholder {
@@ -40,11 +83,12 @@ input::placeholder, textarea::placeholder {
 
 /* Links con buen contraste */
 a {
-  color: #4f46e5; /* indigo-600 */
+  color: var(--primary);
+  transition: color 0.2s ease-in-out;
 }
 
 a:hover {
-  color: #4338ca; /* indigo-700 */
+  color: var(--primary-hover);
 }
 
 /* Botones y enlaces con fondo indigo deben tener texto blanco */
@@ -53,6 +97,7 @@ button.bg-indigo-600,
 a[class*="bg-indigo-600"],
 button[class*="bg-indigo-600"] {
   color: #ffffff !important;
+  transition: all 0.2s ease-in-out;
 }
 
 a.bg-indigo-600:hover,
@@ -60,10 +105,36 @@ button.bg-indigo-600:hover,
 a[class*="bg-indigo-600"]:hover,
 button[class*="bg-indigo-600"]:hover {
   color: #ffffff !important;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
 /* Asegurar que botones y enlaces con bg-indigo-600 tengan texto blanco */
 a[class*="bg-indigo-600"],
 button[class*="bg-indigo-600"] {
   color: #ffffff !important;
+}
+
+/* Transiciones suaves para elementos interactivos */
+button, a, input, select, textarea {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Scrollbar personalizado */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }
