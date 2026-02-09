@@ -30,9 +30,11 @@ const CLASS_NAMES_ES: Record<string, string> = {
   yeast: "levaduras"
 }
 
+export type Level = "leve" | "moderada" | "alta" | "ausente"
+
 export interface InterpretationResult {
   text: string
-  level: 'leve' | 'moderada' | 'alta' | 'ausente'
+  level: Level
   className: string
   count: number
 }
@@ -51,19 +53,19 @@ function interpretCount(className: string, count: number): InterpretationResult 
   }
 
   const classDisplayName = CLASS_NAMES_ES[className] || className
-  let level: 'leve' | 'moderada' | 'alta'
+  let level: Exclude<Level, "ausente">
   let text: string
 
   if (count < thresholds.leve) {
     return null // Muy bajo, no mostrar
   } else if (count < thresholds.moderada) {
-    level = 'leve'
+    level = "leve"
     text = `Se detecta presencia leve de ${classDisplayName}`
   } else if (count < thresholds.alta) {
-    level = 'moderada'
+    level = "moderada"
     text = `Se detecta presencia moderada de ${classDisplayName}`
   } else {
-    level = 'alta'
+    level = "alta"
     text = `Se detecta presencia alta de ${classDisplayName}`
   }
 
@@ -83,8 +85,14 @@ export function interpretCounts(counts: Record<string, number>): InterpretationR
     }
   }
 
-  // Ordenar por nivel (alta -> moderada -> leve)
-  const levelOrder = { alta: 3, moderada: 2, leve: 1 }
+  // Ordenar por nivel (alta -> moderada -> leve -> ausente)
+  const levelOrder: Record<Level, number> = {
+    alta: 3,
+    moderada: 2,
+    leve: 1,
+    ausente: 0
+  }
+
   interpretations.sort((a, b) => levelOrder[b.level] - levelOrder[a.level])
 
   return interpretations
@@ -95,10 +103,10 @@ export function interpretCounts(counts: Record<string, number>): InterpretationR
  */
 export function generateInterpretationText(counts: Record<string, number>): string {
   const interpretations = interpretCounts(counts)
-  
+
   if (interpretations.length === 0) {
     return "No se detectaron elementos significativos en la muestra."
   }
 
-  return interpretations.map(i => i.text).join('. ') + '.'
+  return interpretations.map(i => i.text).join(". ") + "."
 }
