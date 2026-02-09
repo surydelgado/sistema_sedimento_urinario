@@ -70,3 +70,5 @@ script.sql
 # Ignorar todos los README.md
 README.md
 **/README.md
+# --- permitir el modelo YOLO necesario ---
+!backend-ia/app/model/best.pt

@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import { predictImage, getPatients, getCases, getVisits, getAnalysis } from '@/lib/api'
@@ -65,7 +65,7 @@ const CLASS_NAMES_ES: Record<string, string> = {
   yeast: "Levadura"
 }
 
-export default function AnalisisPage() {
+function AnalisisPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const visitIdParam = searchParams.get('visit_id')
@@ -751,5 +751,20 @@ export default function AnalisisPage() {
         )}
       </div>
     </div>
+  )
+}
+
+export default function AnalisisPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+          <p className="text-slate-700 font-medium">Cargando...</p>
+        </div>
+      </div>
+    }>
+      <AnalisisPageContent />
+    </Suspense>
   )
 }
